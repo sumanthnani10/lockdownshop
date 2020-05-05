@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "555040585850",
+    "firebase_url": "https://lockdownmart.firebaseio.com",
+    "project_id": "lockdownmart",
+    "storage_bucket": "lockdownmart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555040585850:android:4fde75daeeded0bfbde3c3",
+        "android_client_info": {
+          "package_name": "com.freetimedevelopers.lockdownshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555040585850-h3omrvi264kqhsolm8oq8r58a4ar4no3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPVDDhvfrTk6fybaDA_JNT7jEntmRFXow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555040585850-h3omrvi264kqhsolm8oq8r58a4ar4no3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
