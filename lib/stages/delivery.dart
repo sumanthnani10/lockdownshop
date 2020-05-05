@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lockdownshop/services/authservice.dart';
 import 'package:recase/recase.dart';
 
 class Delivery extends StatefulWidget {
@@ -44,7 +45,7 @@ class _DeliveryState extends State<Delivery>
         } else {
           print(snapshot.data.documents);
           if (snapshot.data.documents.length == 0) {
-            print(2);
+            AuthService.sett(0, widget.uid);
             return new Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -62,6 +63,7 @@ class _DeliveryState extends State<Delivery>
   }
 
   buildDeliveryList(BuildContext context, snapshot, index) {
+    if (index == 0) AuthService.sett(snapshot["Token"], snapshot["Shop-Id"]);
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4),
       child: new Card(
@@ -77,8 +79,8 @@ class _DeliveryState extends State<Delivery>
                 context,
                 MaterialPageRoute(
                     builder: (context) => Bill4(
-                          snapshot: snapshot,
-                        )));
+                      snapshot: snapshot,
+                    )));
           },
           child: new Row(
             children: <Widget>[
@@ -114,8 +116,8 @@ class _DeliveryState extends State<Delivery>
                       children: <Widget>[
                         new Text(
                           new ReCase(snapshot['Customer-Name']
-                                  .toString()
-                                  .toLowerCase())
+                              .toString()
+                              .toLowerCase())
                               .titleCase,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -153,7 +155,7 @@ class _DeliveryState extends State<Delivery>
                     new Text(
                       "Delivered",
                       style:
-                          TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 8, fontWeight: FontWeight.bold),
                     )
                   ]),
                 ),
@@ -169,7 +171,10 @@ class _DeliveryState extends State<Delivery>
   bool get wantKeepAlive => true;
 
   Future<void> moveDelivery(snap) async {
-    print(snap);
+    await Firestore.instance
+        .collection('Orders')
+        .document(snap["Order-Id"])
+        .setData(snap);
     await Firestore.instance
         .collection("Customers")
         .document(snap["Customer-Id"])

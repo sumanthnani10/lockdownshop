@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lockdownshop/services/authservice.dart';
 import 'package:recase/recase.dart';
 
 class Packing extends StatefulWidget {
@@ -43,7 +44,7 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
         } else {
           print(snapshot.data.documents);
           if (snapshot.data.documents.length == 0) {
-            print(2);
+            AuthService.setp(0, widget.uid);
             return new Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -61,6 +62,7 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
   }
 
   buildPackingList(BuildContext context, snapshot, index) {
+    if (index == 0) AuthService.setp(snapshot["Token"], snapshot["Shop-Id"]);
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4),
       child: new Card(
@@ -76,8 +78,8 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Bill3(
-                          snapshot: snapshot,
-                        )));
+                      snapshot: snapshot,
+                    )));
           },
           child: new Row(
             children: <Widget>[
@@ -113,8 +115,8 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
                       children: <Widget>[
                         new Text(
                           new ReCase(snapshot['Customer-Name']
-                                  .toString()
-                                  .toLowerCase())
+                              .toString()
+                              .toLowerCase())
                               .titleCase,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,

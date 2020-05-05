@@ -5,7 +5,6 @@ import 'package:recase/recase.dart';
 
 class Requests extends StatefulWidget {
   final String uid;
-  int length = 0;
 
   Requests({@required this.uid});
 
@@ -53,9 +52,6 @@ class _RequestsState extends State<Requests>
               children: <Widget>[new Text("No Requests")],
             ));
           } else {
-            setState(() {
-              length = snapshot.data.documents.length;
-            });
             return new ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) => buildRequestsList(
@@ -145,7 +141,6 @@ class _RequestsState extends State<Requests>
 
 class Billing extends StatefulWidget {
   final snapshot;
-
   Billing({@required this.snapshot});
 
   @override
