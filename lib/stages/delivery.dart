@@ -43,9 +43,8 @@ class _DeliveryState extends State<Delivery>
             ],
           ));
         } else {
-          print(snapshot.data.documents);
+          AuthService.updatept(widget.uid);
           if (snapshot.data.documents.length == 0) {
-            AuthService.sett(0, widget.uid);
             return new Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +62,6 @@ class _DeliveryState extends State<Delivery>
   }
 
   buildDeliveryList(BuildContext context, snapshot, index) {
-    if (index == 0) AuthService.sett(snapshot["Token"], snapshot["Shop-Id"]);
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4),
       child: new Card(

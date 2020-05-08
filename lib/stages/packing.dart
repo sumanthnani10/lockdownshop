@@ -42,9 +42,9 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
             ],
           ));
         } else {
+          AuthService.updatept(widget.uid);
           print(snapshot.data.documents);
           if (snapshot.data.documents.length == 0) {
-            AuthService.setp(0, widget.uid);
             return new Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +62,6 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
   }
 
   buildPackingList(BuildContext context, snapshot, index) {
-    if (index == 0) AuthService.setp(snapshot["Token"], snapshot["Shop-Id"]);
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 4),
       child: new Card(
@@ -78,8 +77,8 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
                 context,
                 MaterialPageRoute(
                     builder: (context) => Bill3(
-                      snapshot: snapshot,
-                    )));
+                          snapshot: snapshot,
+                        )));
           },
           child: new Row(
             children: <Widget>[
@@ -115,8 +114,8 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
                       children: <Widget>[
                         new Text(
                           new ReCase(snapshot['Customer-Name']
-                              .toString()
-                              .toLowerCase())
+                                  .toString()
+                                  .toLowerCase())
                               .titleCase,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -170,6 +169,7 @@ class _PackingState extends State<Packing> with AutomaticKeepAliveClientMixin {
 
   Future<void> movePacked(snap) async {
     print(snap);
+    snap["Stage"] = "S4";
     await Firestore.instance
         .collection('Shops')
         .document(snap["Shop-Id"])

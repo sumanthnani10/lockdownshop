@@ -26,33 +26,54 @@ class AuthService {
     FirebaseAuth.instance.signOut();
   }
 
-  static void setp(int i, String uid) {
-    p = i;
-    updatept(uid);
-  }
-
-  static void sett(int i, String uid) {
-    t = i;
-    updatept(uid);
-  }
-
-  static void updatept(String uid) {
-    if (t == 0) {
-      if (p == 0) {
-        pt = 0;
-        Firestore.instance
-            .collection("Shops")
-            .document(uid)
-            .updateData({"Token": 0});
-      } else {
-        pt = p;
-      }
-    } else {
-      pt = t;
-    }
+  static void updatept(String uid) async {
     Firestore.instance
         .collection("Shops")
         .document(uid)
-        .updateData({"Pres-Token": pt});
+        .collection('S4')
+        .orderBy('Time')
+        .limit(1)
+        .snapshots()
+        .listen((data) {
+      if (data.documents.length > 0) {
+        t = data.documents[0]["Token"];
+        pt = t;
+        Firestore.instance
+            .collection("Shops")
+            .document(uid)
+            .updateData({"Pres-Token": t});
+        print("set t ${t}");
+      } else {
+        t = 0;
+        Firestore.instance
+            .collection("Shops")
+            .document(uid)
+            .collection('S3')
+            .orderBy('Time')
+            .limit(1)
+            .snapshots()
+            .listen((data) {
+          if (data.documents.length > 0) {
+            p = data.documents[0]["Token"];
+            pt = p;
+            Firestore.instance
+                .collection("Shops")
+                .document(uid)
+                .updateData({"Pres-Token": p});
+            print("set p ${p}");
+          } else {
+            p = 0;
+            pt = 0;
+            Firestore.instance
+                .collection("Shops")
+                .document(uid)
+                .updateData({"Token": 0, "Pres-Token": 0});
+            print("set 0");
+          }
+        });
+      }
+    });
+
+    print(t.toString() + p.toString() + pt.toString());
   }
 }
