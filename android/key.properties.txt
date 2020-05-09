@@ -1,0 +1,4 @@
+storePassword=balsumanth
+keyPassword=balsumanth
+keyAlias=Sumanth
+storeFile=C:/Users/Sumanth/key.jks
